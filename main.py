@@ -3,6 +3,7 @@
 # A text-based adventure game.
 # Gamespot gives it 9 out of 10.
 
+import random
 import sys
 import textwrap
 import time
@@ -26,7 +27,7 @@ REACH THE END BEFORE THE MAN GON GET U.
 
 CHOICES =   """
     ----
-    D.
+    D. Stop to refuel (NO FOOD AT GAS STATION)
     E. Status Check
     Q. QUIT
     ----    
@@ -43,13 +44,16 @@ def intro():
 def main():
     #intro()
 
+    # CONSTANTS
+    MAX_FUEL_LEVEL = 50
+
     # Variables
     done = False
     km_travelled = 0        # 100km is the end
     agents_distance = -20   # 0 is the end
     turns = 0
     tofu = 3                # 3 is max
-    fuel = 50               # max is 50
+    fuel = MAX_FUEL_LEVEL
     hunger = 0
 
     # MAIN LOOP
@@ -60,9 +64,20 @@ def main():
         print(CHOICES)
 
         user_choice = input("What do you want to do? ").lower().strip("!,.? ")
-        if user_choice == "d"
+        if user_choice == "d":
             pass
-            #
+            # Refueling
+            # Fill up the fuel tank
+            fuel = MAX_FUEL_LEVEL
+
+            # Consider the agents coming closer
+            agents_distance += random.randrange(7, 15)
+
+            # Give player feedback
+            print()
+            print("-------- You filled the fuel tank.")
+            print("-------- The agents got closer...")
+            print()
         elif user_choice == "e":
             print(f"\t---Status Check---")
             print(f"\tkm travelled: {km_travelled}")
