@@ -50,7 +50,27 @@ YOU'VE SEEN IT BEFORE, BUT ONLY ON TV.
 
 """
 
-CHOICES =   """
+LOSE_HUNGER = """
+BRUH you just died of hunger LMAO
+Should've listened when i told you to eat
+Smh good luck next time
+"""
+
+LOSE_AGENTS = """
+Man they got you, you weren't fast enough
+That's tough but sometimes life's just like that
+They got you this time, but it's all good
+You'll get em next time
+"""
+
+LOSE_FUEL = """
+Yo what's that sound you're hearing
+Did the car get COVID why's it coughing so hard
+Oh nvm it's just out of fuel
+The agents got u :|
+"""
+
+CHOICES = """
     ----
     A. Eat a piece of tofu
     B. Drive at a moderate speed
@@ -76,6 +96,7 @@ def main():
     MAX_FUEL_LEVEL = 50
     MAX_DISTANCE_TRAVELED = 100
     MAX_TOFU_AMOUNT = 3
+    MAX_HUNGER = 50
 
     # Variables
     done = False
@@ -88,9 +109,32 @@ def main():
 
     # MAIN LOOP
     while not done:
+
+        # Check if reached END GAME
+        # WIN - Travelled the distance required
+        if km_traveled > MAX_DISTANCE_TRAVELED:
+            time.sleep(2)
+            type_text_output(WIN)
+            break
+        # LOSE - by hunger > MAX_HUNGER (50)
+        elif hunger > MAX_HUNGER:
+            time.sleep(2)
+            type_text_output(LOSE_HUNGER)
+            break
+        # LOSE - Agents reach you
+        elif agents_distance >= 0:
+            time.sleep(2)
+            type_text_output(LOSE_AGENTS)
+            break
+        # LOSE - fuel runs out
+        elif fuel <= 0:
+            time.sleep(2)
+            type_text_output(LOSE_FUEL)
+            break
+
         # Random events
         # FIDO - refills your food (5%)
-        if tofu <3 and random.random() < 0.05:
+        if tofu < 3 and random.random() < 0.05:
             # refill tofu
             tofu = MAX_TOFU_AMOUNT
             # player feedback
@@ -101,12 +145,13 @@ def main():
             print("Thanks..... Jah ;)")
             time.sleep(2)
 
-        # Check if reached END GAME
-        # WIN - Travelled the distance required
-        if km_traveled > MAX_DISTANCE_TRAVELED:
-            #time.sleep(2)
-            type_text_output(WIN)
-            break
+        # DISPLAY HUNGER
+        if hunger > 40:
+            print("******** You really gotta eat bro.")
+            time.sleep(1)
+        elif hunger > 25:
+            print("******** You're lowwww key hungry")
+            time.sleep(1)
 
         # Present the user their choices
         print(CHOICES)
@@ -187,13 +232,20 @@ def main():
         elif user_choice == "q":
             print("Thanks for playing g you a real one :)")
             done = True
+        else:
+            print("\tPlease choose a valid choice.")
+
+        # UPKEEP
+        if user_choice in ["b", "c", "d"]:
+            hunger += random.randrange(8, 18)
+            turns += 1
 
         time.sleep(1.5)
 
-        # TODO: Change the environment based on
-        #       user choice, and RNG
-        # TODO: Random event generator
-
+    # Outro
+    print()
+    print("Thanks for playing, hopefully I see you again soon")
+    print(f"You finished the game in {turns} turns.")
 
 if __name__ == "__main__":
     main()
